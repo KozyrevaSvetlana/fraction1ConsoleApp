@@ -12,20 +12,37 @@ namespace fractions
         /// Числитель
         /// </summary>
         public int Numerator;
-
         /// <summary>
         /// Знаменатель
         /// </summary>
         public int Denomenator;
+        /// <summary>
+        /// знак дроби
+        /// </summary>
+        public int sign;
 
         public Fraction(int numerator, int denomenator)
         {
-            Numerator = numerator;
-            Denomenator = denomenator;
+            if (numerator >= 0 && denomenator >= 0)
+            {
+                sign = 1;
+            }
+            if (numerator < 0 || denomenator < 0)
+            {
+                sign = -1;
+            }
+            if (numerator <= 0 && denomenator <= 0)
+            {
+                sign = 1;
+            }
+            Numerator = Math.Abs(numerator);
+            Denomenator = Math.Abs(denomenator);
         }
         public Fraction(int numerator) : this(numerator, 1)
         {
-            Numerator = numerator;
+
+            sign = numerator >= 0 ? 1 : -1;
+            Numerator = Math.Abs(numerator);
         }
 
         public void Print()
@@ -87,9 +104,9 @@ namespace fractions
 
         public Fraction Sum(Fraction otherFraction)
         {
-            int commonDenomenator = Denomenator * otherFraction.Denomenator;
+            int commonDenomenator = sign * Denomenator * otherFraction.Denomenator * otherFraction.sign;
 
-            int resultNumerator = Numerator * otherFraction.Denomenator + otherFraction.Numerator * Denomenator;
+            int resultNumerator = (sign * otherFraction.sign) * (Numerator * otherFraction.Denomenator + otherFraction.Numerator * Denomenator);
 
             Fraction result = new Fraction(resultNumerator, commonDenomenator);
             return result;
@@ -98,7 +115,7 @@ namespace fractions
         {
             int commonDenomenator = Denomenator * otherFraction.Denomenator;
 
-            int resultNumerator = Numerator * otherFraction.Denomenator - otherFraction.Numerator * Denomenator;
+            int resultNumerator = (Numerator * otherFraction.Denomenator - otherFraction.Numerator * Denomenator);
 
             Fraction result = new Fraction(resultNumerator, commonDenomenator);
             return result;
@@ -164,12 +181,17 @@ namespace fractions
             return a + b;
         }
 
+        public void fractionСonversion(int Numerator, int Denomenator, int)
+        {
+
+        }
+
     }
     class Program
     {
         static void Main(string[] args)
         {
-            Fraction fraction1 = new Fraction(19, 17);
+            Fraction fraction1 = new Fraction(-19, 17);
             fraction1.Print();
 
             // проверить отрицательные значения
