@@ -47,78 +47,65 @@ namespace fractions
 
         public void Print()
         {
-            if (Numerator < Denomenator)//числитель меньше знаменателя
+            if (Numerator == 0)
             {
-                int result = GreatestCommonDivisor();
-                if (result == 1)
+                Console.WriteLine("0");
+            }
+            else
+            {
+                if (Numerator == Denomenator)
                 {
-                    Console.WriteLine($"{Numerator}/{Denomenator}");
+                    Console.WriteLine("1");
                 }
                 else
                 {
-                    Console.WriteLine($"{Numerator / result}/{Denomenator / result}");
+                    Console.WriteLine(sign == 1 ? $"{Numerator}/{Denomenator}" : $"-{Numerator}/{Denomenator}");
                 }
             }
-            if (Numerator == Denomenator)
-            {
-                Numerator = 1;
-                Denomenator = 1;
-                Console.WriteLine("1");
-            }
-            if (Numerator > Denomenator)//числитель больше знаменателя
-            {
-                int result = GreatestCommonDivisor();
-                if (result == 1)
-                {
-                    if (Denomenator == 1)
-                    {
-                        Console.WriteLine(Numerator);
-                    }
-                    else
-                    {
-                        int integer = Numerator / Denomenator;
-                        Console.WriteLine($"{integer} {Numerator - integer * Denomenator}/{Denomenator}");
-                    }
-                }
-                else
-                {
-                    if (Denomenator / result == 1)
-                    {
-                        Console.WriteLine($"{Numerator / result}");
-                    }
-                    else
-                    {
-                        if (Numerator > Denomenator)
-                        {
-                            int integer = Numerator / Denomenator;
-                            Console.WriteLine($"{integer} {Numerator / result - Denomenator / result}/{Denomenator / result}");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"{Numerator / result}/{Denomenator / result}");
-                        }
-                    }
-                }
-            }
+
         }
 
         public Fraction Sum(Fraction otherFraction)
         {
-            int commonDenomenator = sign * Denomenator * otherFraction.Denomenator * otherFraction.sign;
-
-            int resultNumerator = (sign * otherFraction.sign) * (Numerator * otherFraction.Denomenator + otherFraction.Numerator * Denomenator);
-
-            Fraction result = new Fraction(resultNumerator, commonDenomenator);
+            Fraction result = new Fraction(0, 0);
+            if (sign == 1 && otherFraction.sign == 1)
+            {
+                result.Denomenator = Denomenator * otherFraction.Denomenator;
+                result.Numerator = Numerator * otherFraction.Denomenator + otherFraction.Numerator * Denomenator;
+            }
+            if (sign == 1 && otherFraction.sign == -1)
+            {
+                result=Difference(otherFraction);
+            }
+            if (sign == -1 && otherFraction.sign == 1)
+            {
+                Fraction sumFraction = new Fraction(sign* Numerator,Denomenator);
+                result=otherFraction.Difference(sumFraction);
+            }
+            if (sign == -1 && otherFraction.sign == -1)
+            {
+                result.Denomenator = Denomenator * otherFraction.Denomenator;
+                result.Numerator = Math.Abs(sign *Numerator * otherFraction.Denomenator + otherFraction.sign*otherFraction.Numerator * Denomenator);
+                result.sign = -1;
+            }
+            result = GreatestCommonDivisor(result.Numerator,result.Denomenator,result.sign);
             return result;
         }
         public Fraction Difference(Fraction otherFraction)
         {
-            int commonDenomenator = Denomenator * otherFraction.Denomenator;
-
-            int resultNumerator = (Numerator * otherFraction.Denomenator - otherFraction.Numerator * Denomenator);
-
-            Fraction result = new Fraction(resultNumerator, commonDenomenator);
-            return result;
+            if (sign==-1&& otherFraction.sign==-1)
+            {
+                Fraction sumFraction = new Fraction(otherFraction.Numerator, otherFraction.Denomenator);
+                Sum(sumFraction);
+            }
+            else
+            {
+                int commonDenomenator = Denomenator * otherFraction.Denomenator;
+                int resultNumerator = Numerator * otherFraction.Denomenator - otherFraction.Numerator * Denomenator;
+                Fraction result = new Fraction(resultNumerator, commonDenomenator);
+                return GreatestCommonDivisor(result.Numerator, result.Denomenator, result.sign);
+            }
+            return null;
         }
         public Fraction Multiply(Fraction otherFraction)
         {
@@ -163,7 +150,7 @@ namespace fractions
         /// Наибольший общий делитель (НОД)
         /// </summary>
         /// <returns></returns>
-        public int GreatestCommonDivisor()
+        public Fraction GreatestCommonDivisor(int Numerator, int Denomenator, int sign)
         {
             int a = Numerator;
             int b = Denomenator;
@@ -178,23 +165,23 @@ namespace fractions
                     b = b % a;
                 }
             }
-            return a + b;
+            int commonDivisor = a + b;
+            Fraction result = new Fraction((sign * Numerator / commonDivisor), (Denomenator / commonDivisor));
+            return result;
         }
-
-        public void fractionСonversion(int Numerator, int Denomenator, int)
-        {
-
-        }
-
     }
     class Program
     {
         static void Main(string[] args)
         {
-            Fraction fraction1 = new Fraction(-19, 17);
+            Fraction fraction1 = new Fraction(-3, 7);
             fraction1.Print();
+            Fraction fraction2 = new Fraction(-2, 7);
+            fraction2.Print();
+            Fraction fraction3 = fraction1.Sum(fraction2);
+            fraction3.Print();// 
 
-            // проверить отрицательные значения
+            // проверить отрицательные значения первая и вторая дробь отрицательные
         }
     }
 }
