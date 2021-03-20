@@ -10,24 +10,48 @@ namespace fractions
     {
         static void Main(string[] args)
         {
-            Fraction fraction1 = new Fraction(0, 0);
-            Fraction fraction2 = new Fraction(0, 0);
-
-            Console.WriteLine("Ввод первой дроби");
-            Console.WriteLine("Введите числитель");
-            fraction1.Numerator = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Введите знаменатель. Если хотите ввести целое число, то напишите 1");
-            fraction1.Denomenator = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("дробь успешно создана");
+            Fraction fraction1, fraction2;
+            Console.WriteLine("Здравствуйте!");
             Console.WriteLine("");
-            
-            Console.WriteLine("Ввод второй дроби");
-            Console.WriteLine("Введите числитель");
-            fraction2.Numerator = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Введите знаменатель. Если хотите ввести целое число, то напишите 1");
-            fraction2.Denomenator = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("дробь успешно создана");
+            СreateАraction(out fraction1, out fraction2);
+            Arithmetic(fraction1, fraction2);
 
+            while (true)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("Выберите действие:");
+                Console.WriteLine("1 - начать сначала");
+                Console.WriteLine("2 - завершить работу");
+                string answer = Console.ReadLine();
+                int userAnswer = 0;
+                Int32.TryParse(answer, out userAnswer);
+                while (userAnswer <= 0 || userAnswer > 2)
+                {
+                    Console.WriteLine("1 - начать сначала");
+                    Console.WriteLine("2 - завершить работу");
+                    userAnswer = Convert.ToInt32(Console.ReadLine());
+                    Int32.TryParse(answer, out userAnswer);
+                }
+                switch (userAnswer)
+                {
+                    case 1:
+                        СreateАraction(out fraction1, out fraction2);
+                        Arithmetic(fraction1, fraction2);
+                        break;
+                    case 2:
+                        Console.WriteLine("Вы уверены, что хотите выйти?");
+                        answer = Console.ReadLine().ToLower();
+                        if (answer == "да")
+                        {
+                            System.Environment.Exit(0);
+                        }
+                        break;
+                }
+            }
+        }
+
+        private static void Arithmetic(Fraction fraction1, Fraction fraction2)
+        {
             Fraction resultFraction = new Fraction(0, 0);
             Console.WriteLine("Введите число");
             Console.WriteLine("1 - Сложение");
@@ -37,7 +61,7 @@ namespace fractions
             string answer = Console.ReadLine();
             int userAnswer = 0;
             Int32.TryParse(answer, out userAnswer);
-            while (userAnswer<=0|| userAnswer>4)
+            while (userAnswer <= 0 || userAnswer > 4)
             {
                 Console.WriteLine("Введите верное число");
                 Console.WriteLine("1 - Сложение");
@@ -69,6 +93,28 @@ namespace fractions
                     resultFraction.Print();
                     break;
             }
+        }
+
+        private static void СreateАraction(out Fraction fraction1, out Fraction fraction2)
+        {
+            fraction1 = new Fraction(0, 0);
+            fraction2 = new Fraction(0, 0);
+            Console.WriteLine("Ввод первой дроби");
+            Console.WriteLine("Введите числитель");
+            fraction1.Numerator = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Введите знаменатель. Если хотите ввести целое число, то напишите 1");
+            fraction1.Denomenator = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Успешно создана дробь: ");
+            fraction1.Print();
+            Console.WriteLine("");
+
+            Console.WriteLine("Ввод второй дроби");
+            Console.WriteLine("Введите числитель");
+            fraction2.Numerator = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Введите знаменатель. Если хотите ввести целое число, то напишите 1");
+            fraction2.Denomenator = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Успешно создана дробь: ");
+            fraction2.Print();
         }
     }
 }
