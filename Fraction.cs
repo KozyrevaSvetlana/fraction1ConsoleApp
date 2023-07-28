@@ -2,6 +2,9 @@
 
 namespace fractions
 {
+    /// <summary>
+    /// что-то
+    /// </summary>
     public class Fraction
     {
         /// <summary>
